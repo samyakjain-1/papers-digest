@@ -7,6 +7,7 @@ import { findSimilarPapers } from './actions/similar';
 import { embedPaper, embedAllPapers } from './actions/embed';
 import { savePaper, unsavePaper } from './actions/save';
 import { getSavedPapers } from './actions/feed';
+import { getRecommendedPapers } from './actions/recommend';
 import { ObjectId } from 'mongodb';
 
 /**
@@ -23,8 +24,8 @@ export default new Module('paper', {
     /**
      * A query to list papers with filtering, pagination, and searching.
      */
-    async list(params) {
-      return await listPapers(params);
+    async list(params, { user }) {
+      return await listPapers(params, user || null);
     },
     /**
      * A query to get a single paper by its arxivId.
@@ -65,6 +66,10 @@ export default new Module('paper', {
 
     async getSaved(_: any, { user }: any) {
       return await getSavedPapers(user);
+    },
+
+    async recommend(_: any, { user }: any) {
+      return await getRecommendedPapers(user);
     }
   },
   mutations: {

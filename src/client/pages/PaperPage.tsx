@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ReactMarkdown from 'react-markdown';
 import { modelenceQuery, modelenceMutation } from '@modelence/react-query';
 import { useSession } from 'modelence/client';
+import { Wand2, Bookmark, Cpu, Check } from 'lucide-react';
 
 
 export default function PaperPage() {
@@ -63,29 +64,32 @@ export default function PaperPage() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <button onClick={() => navigate(-1)} className="mb-6 px-4 py-2 bg-gray-200 rounded-md">
+      <button onClick={() => navigate(-1)} className="mb-6 px-4 py-2 bg-light-gray rounded-md hover:bg-gray-600 transition-colors">
         &larr; Back to Papers
       </button>
       <h1 className="text-3xl font-bold mb-2">{paper.title}</h1>
-      <p className="text-lg text-gray-700 mb-4">{paper.authors.join(', ')}</p>
+      <p className="text-lg text-gray-400 mb-4">{paper.authors.join(', ')}</p>
       
       <div className="flex items-center gap-4 mb-6 text-sm">
-        <a href={paper.arxivUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+        <a href={paper.arxivUrl} target="_blank" rel="noopener noreferrer" className="text-electric-blue hover:underline">
           arXiv Page
         </a>
-        <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+        <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer" className="text-electric-blue hover:underline">
           PDF
         </a>
         <span>{new Date(paper.publishedAt).toLocaleDateString()}</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        <div className="prose max-w-none p-4 border border-gray-200 rounded-md">
+        <div className="prose max-w-none p-4 border border-light-gray rounded-md bg-light-gray/20">
           <h2 className="text-2xl font-semibold mb-2">Abstract</h2>
           <p>{paper.abstract}</p>
         </div>
-        <div className="prose max-w-none p-4 border border-gray-200 rounded-md">
-          <h2 className="text-2xl font-semibold mb-2">Simplified Abstract</h2>
+        <div className="prose max-w-none p-4 border border-cyan-glow rounded-md bg-light-gray/20 relative overflow-hidden">
+          <div className="absolute inset-0 border-2 border-cyan-glow rounded-md animate-pulse"></div>
+          <h2 className="text-2xl font-semibold mb-2 flex items-center gap-2">
+            Simplified Abstract <span className="text-xs bg-cyan-glow/20 text-cyan-glow px-2 py-1 rounded-full">✨ AI</span>
+          </h2>
           {paper.simplifiedAbstract ? (
             <ReactMarkdown>{paper.simplifiedAbstract}</ReactMarkdown>
           ) : (
@@ -98,23 +102,29 @@ export default function PaperPage() {
         <button
           onClick={() => simplify({ arxivId })}
           disabled={isSimplifying}
-          className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
+          className="mt-6 px-4 py-2 bg-electric-blue text-white rounded-md hover:bg-blue-600 disabled:opacity-50 transition-colors flex items-center gap-2"
+          title="Simplify Abstract"
         >
-          {isSimplifying ? 'Simplifying...' : 'Simplify Abstract'}
+          <Wand2 size={18} />
+          {isSimplifying ? 'Simplifying...' : 'Simplify'}
         </button>
         <button
           onClick={() => embed({ arxivId })}
           disabled={isEmbedding || paper.embedding}
-          className="mt-6 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50"
+          className="mt-6 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:opacity-50 transition-colors flex items-center gap-2"
+          title="Generate Embedding"
         >
-          {isEmbedding ? 'Generating Embedding...' : (paper.embedding ? 'Embedding Generated' : 'Generate Embedding')}
+          {paper.embedding ? <Check size={18} /> : <Cpu size={18} />}
+          {isEmbedding ? 'Generating...' : (paper.embedding ? 'Embedding Generated' : 'Generate Embedding')}
         </button>
         {user && (
           <button
             onClick={() => paper.isSaved ? unsavePaper({ paperId: paper._id }) : savePaper({ paperId: paper._id })}
             disabled={isSaving || isUnsaving}
-            className="mt-6 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 disabled:opacity-50"
+            className="mt-6 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 disabled:opacity-50 transition-colors flex items-center gap-2"
+            title={paper.isSaved ? 'Unsave Paper' : 'Save Paper'}
           >
+            <Bookmark size={18} />
             {isSaving || isUnsaving ? '...' : (paper.isSaved ? 'Unsave' : 'Save')}
           </button>
         )}
@@ -126,11 +136,11 @@ export default function PaperPage() {
         {similarPapers && similarPapers.length > 0 && (
           <div className="space-y-4">
             {similarPapers.map((p: any) => (
-              <div key={p.arxivId} className="p-4 border border-gray-200 rounded-md">
-                <Link to={`/paper/${p.arxivId}`} className="text-lg font-bold text-blue-600 hover:underline">
+              <div key={p.arxivId} className="p-4 border border-light-gray rounded-md bg-light-gray/20 hover:bg-light-gray/40 transition-colors">
+                <Link to={`/paper/${p.arxivId}`} className="text-lg font-bold text-electric-blue hover:underline">
                   {p.title}
                 </Link>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-400 mt-1">
                   by {p.authors.join(', ')}
                 </p>
                 <div className="flex items-center gap-4 mt-2 text-xs">

@@ -1,20 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-gray-900 text-white;
+}
+
+body.landing-page-body {
+  @apply bg-black;
+}
+
+.landing-container {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+}
+
+.stars-layer, .grid-layer, .glow-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.stars-layer {
+  background-image: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  background-size: 1px 1px, 2px 2px;
+  background-position: 50% 50%;
+}
+
+.grid-layer {
+  background-image: 
+    linear-gradient(to right, rgba(124, 58, 237, 0.2) 1px, transparent 1px), 
+    linear-gradient(to bottom, rgba(124, 58, 237, 0.2) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+.glow-layer {
+  background-image: radial-gradient(
+    circle at var(--mouse-x) var(--mouse-y),
+    rgba(124, 58, 237, 0.5),
+    transparent 40%
+  );
+  transition: background 0.2s;
+}
+
 .auth-ui button[type='submit'] {
-  @apply w-full bg-gray-800 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 transition-colors;
+  @apply w-full bg-electric-blue text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-electric-blue transition-colors;
 }
 
 .auth-ui input[type='email'],
 .auth-ui input[type='password'] {
-  @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800;
+  @apply w-full px-4 py-3 border-none bg-light-gray/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-electric-blue;
 }
 
 .auth-ui label {
-  @apply text-sm font-medium text-gray-700;
+  @apply text-sm font-medium text-gray-400;
 }
 
 .auth-ui a {
-  @apply text-gray-800 font-semibold hover:underline;
+  @apply text-electric-blue font-semibold hover:underline;
+}
+
+.auth-ui > div {
+  @apply bg-transparent border-none;
 }

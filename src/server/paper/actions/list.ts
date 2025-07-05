@@ -1,5 +1,7 @@
-import { dbPapers } from '../db';
+import { dbPapers, dbSavedPapers } from '../db';
 import natural from 'natural';
+import { UserInfo } from 'modelence/server';
+import { ObjectId } from 'mongodb';
 
 interface ListPapersParams {
   limit?: number;
@@ -14,12 +16,15 @@ interface ListPapersParams {
  * @param {ListPapersParams} params - The query parameters.
  * @returns {Promise<{papers: Array<any>, total: number}>} - A list of papers and the total count.
  */
-export async function listPapers({
-  limit = 20,
-  offset = 0,
-  search,
-  sortBy = 'publishedAt',
-}: ListPapersParams) {
+export async function listPapers(
+  {
+    limit = 20,
+    offset = 0,
+    search,
+    sortBy = 'publishedAt',
+  }: ListPapersParams,
+  user: UserInfo | null
+) {
   const query: any = {};
 
   // Add search filter for title or abstract if provided
@@ -63,6 +68,9 @@ export async function listPapers({
 
     const paginatedPapers = sortedPapers.slice(offset, offset + limit);
 
+    const savedPapers = user ? await dbSavedPapers.fetch({ userId: new ObjectId(user.id) }) : [];
+    const savedPaperIds = new Set(savedPapers.map((p: any) => p.paperId.toString()));
+
     // Manually project the fields to return only the necessary data
     const papers = paginatedPapers.map(paper => ({
       title: paper.title,
@@ -71,6 +79,7 @@ export async function listPapers({
       categories: paper.categories,
       authors: paper.authors,
       _id: paper._id, // include id for react keys
+      isSaved: savedPaperIds.has(paper._id.toString()),
     }));
 
     return { papers, total };
