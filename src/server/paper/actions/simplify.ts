@@ -26,17 +26,20 @@ export async function simplifyAbstract({ arxivId }: SimplifyAbstractParams) {
     }
 
     // 2. Use the OpenAI API to generate a simplified summary
-    const prompt = `You are a friendly science communicator. Your job is to explain research papers abstract in a way that anyone can understand — even if they don’t have a technical background.
+    const prompt = `You are a friendly science communicator. Your job is to explain the abstract of a research paper in a way that anyone can understand — even those without a technical background.
 
-Simplify the following abstract by:
+                    Simplify the following abstract by:
 
-- Explaining the main idea in plain, simple language.
-- Avoiding technical jargon or explaining it briefly if necessary.
-- Using everyday analogies or examples to make complex ideas clear.
-- Focusing on what the research does and why it matters.
+                    - Explaining the main idea in clear, simple language.
 
-Abstract:
-${paper.abstract}`;
+                    - Avoiding technical jargon, or briefly explaining it if necessary.
+
+                    - Using everyday analogies or examples to clarify complex ideas.
+
+                    - Highlighting what the research does and why it matters.
+
+                    Abstract:
+                    ${paper.abstract}`;
     
     const response = await openai.chat.completions.create({
       model: 'gpt-4o',

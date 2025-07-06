@@ -119,7 +119,7 @@ export default function PaperPage() {
         </button>
         {user && (
           <button
-            onClick={() => paper.isSaved ? unsavePaper({ paperId: paper._id }) : savePaper({ paperId: paper._id })}
+            onClick={() => paper.isSaved ? unsavePaper({ paperId: paper._id.toString() }) : savePaper({ paperId: paper._id.toString() })}
             disabled={isSaving || isUnsaving}
             className="mt-6 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 disabled:opacity-50 transition-colors flex items-center gap-2"
             title={paper.isSaved ? 'Unsave Paper' : 'Save Paper'}

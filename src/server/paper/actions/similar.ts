@@ -5,7 +5,7 @@ interface FindSimilarPapersParams {
 }
 
 /**
- * Finds papers with similar abstracts using TF-IDF.
+ * Finds papers with similar abstracts using vector search.
  *
  * @param {FindSimilarPapersParams} params - The parameters containing the arxivId.
  * @returns {Promise<Array<any>>} - A list of similar papers.
