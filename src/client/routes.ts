@@ -24,5 +24,9 @@ export const routes = [
   {
     path: '/saved',
     Component: lazy(() => import('./pages/FeedPage')),
+  },
+  {
+    path: '*',
+    Component: lazy(() => import('./pages/NotFoundPage')),
   }
 ];
