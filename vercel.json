@@ -1,4 +1,10 @@
 {
+  "builds": [
+    {
+      "src": ".modelence/build/app.mjs",
+      "use": "@vercel/node"
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
