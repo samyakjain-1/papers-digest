@@ -8,7 +8,7 @@
     "start": "node .modelence/build/app.mjs",
     "dev": "modelence dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch-papers": "npm run build && node -e 'import(\"./.modelence/build/server/paper/actions/fetch.js\").then(module => module.fetchAndInsertPapers()).then(() => import(\"./.modelence/build/server/paper/actions/embed.js\").then(module => module.embedAllPapers()))'"
+    "fetch-papers": "ts-node -e 'import(\"./src/server/paper/actions/fetch\").then(module => module.fetchAndInsertPapers()).then(() => import(\"./src/server/paper/actions/embed\").then(module => module.embedAllPapers()))'"
   },
   "dependencies": {
     "@modelence/ai": "latest",
@@ -38,6 +38,7 @@
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
