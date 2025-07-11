@@ -1,0 +1,13 @@
+{
+  "functions": {
+    ".modelence/build/app.mjs": {
+      "memory": 1024
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/.modelence/build/app.mjs"
+    }
+  ]
+}
