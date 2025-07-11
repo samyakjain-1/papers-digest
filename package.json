@@ -8,7 +8,7 @@
     "start": "node .modelence/build/app.mjs",
     "dev": "modelence dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch-papers": "ts-node -e 'import(\"./src/server/paper/actions/fetch\").then(module => module.fetchAndInsertPapers()).then(() => import(\"./src/server/paper/actions/embed\").then(module => module.embedAllPapers()))'"
+    "fetch-papers": "ts-node scripts/run-cron.ts"
   },
   "dependencies": {
     "@modelence/ai": "latest",
