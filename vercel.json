@@ -1,9 +1,4 @@
 {
-  "functions": {
-    ".modelence/build/app.mjs": {
-      "memory": 1024
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
