@@ -1,6 +1,6 @@
 // scripts/run-cron.ts
-import { fetchAndInsertPapers } from '../src/server/paper/actions/fetch';
-import { embedAllPapers } from '../src/server/paper/actions/embed';
+import { fetchAndInsertPapers } from '../src/server/paper/actions/fetch.js';
+import { embedAllPapers } from '../src/server/paper/actions/embed.js';
 
 async function main() {
   console.log('Starting scheduled job: fetch and embed papers...');
