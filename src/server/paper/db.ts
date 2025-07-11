@@ -34,6 +34,9 @@ export const dbPapers = new Store('papers', {
     
     // Vector embedding of the abstract, used for semantic similarity search.
     embedding: schema.array(schema.number()).optional(),
+    
+    // The conference the paper was published in, if available.
+    conference: schema.string().optional(),
   },
 
   /**
@@ -61,5 +64,25 @@ export const dbSavedPapers = new Store('savedPapers', {
   },
   indexes: [
     { key: { userId: 1, paperId: 1 }, unique: true },
+  ],
+});
+
+export const dbLists = new Store('lists', {
+  schema: {
+    userId: schema.userId(),
+    name: schema.string(),
+  },
+  indexes: [
+    { key: { userId: 1 } },
+  ],
+});
+
+export const dbPaperLists = new Store('paperLists', {
+  schema: {
+    listId: schema.objectId(),
+    paperId: schema.objectId(),
+  },
+  indexes: [
+    { key: { listId: 1, paperId: 1 }, unique: true },
   ],
 });

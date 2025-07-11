@@ -2,7 +2,24 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import { dbPapers } from '../db.ts';
 
-const ARXIV_API_URL = 'https://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL&start=0&max_results=2000&sortBy=submittedDate&sortOrder=descending';
+const ARXIV_API_URL = 'https://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL+OR+cat:cs.CV+OR+cat:cs.NE&start=0&max_results=5000&sortBy=submittedDate&sortOrder=descending';
+
+const CONFERENCE_ACRONYMS = [
+  'CVPR', 'ICCV', 'ECCV', 'NeurIPS', 'ICML', 'ICLR', 'ACL', 'EMNLP', 'NAACL', 'SIGGRAPH'
+];
+
+function extractConference(comment: string): string | undefined {
+  if (!comment) {
+    return undefined;
+  }
+  for (const acronym of CONFERENCE_ACRONYMS) {
+    const regex = new RegExp(`\\b${acronym}\\b`, 'i');
+    if (regex.test(comment)) {
+      return acronym;
+    }
+  }
+  return undefined;
+}
 
 /**
  * Fetches the latest AI/ML papers from the arXiv API, parses them,
@@ -51,7 +68,10 @@ export async function fetchAndInsertPapers() {
         // Extract the arXiv ID from the URL (e.g., "http://arxiv.org/abs/2103.12345v1" -> "2103.12345v1")
         const arxivId = entry.id.split('/abs/').pop();
 
-        const paperData = {
+        const comment = entry['arxiv:comment'];
+        const conference = extractConference(comment);
+
+        const paperData: any = {
           title: entry.title,
           authors,
           abstract: entry.summary.trim(),
@@ -61,6 +81,10 @@ export async function fetchAndInsertPapers() {
           categories,
           publishedAt: new Date(entry.published),
         };
+
+        if (conference) {
+          paperData.conference = conference;
+        }
 
         // 4. Manually perform an upsert operation.
         const existingPaper = await dbPapers.findOne({ arxivId: paperData.arxivId });

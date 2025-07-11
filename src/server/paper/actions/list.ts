@@ -7,6 +7,7 @@ interface ListPapersParams {
   offset?: number;
   search?: string;
   sortBy?: 'publishedAt' | 'relevance';
+  conference?: string;
 }
 
 /**
@@ -21,6 +22,7 @@ export async function listPapers(
     offset = 0,
     search,
     sortBy = 'publishedAt',
+    conference,
   }: ListPapersParams,
   user: UserInfo | null
 ) {
@@ -29,6 +31,10 @@ export async function listPapers(
   // Use text search if a search query is provided
   if (search) {
     query.$text = { $search: search };
+  }
+
+  if (conference) {
+    query.conference = conference;
   }
 
   try {
@@ -57,6 +63,7 @@ export async function listPapers(
       authors: paper.authors,
       _id: paper._id,
       isSaved: savedPaperIds.has(paper._id.toString()),
+      conference: paper.conference,
     }));
 
     return { papers, total };

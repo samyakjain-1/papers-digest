@@ -26,6 +26,14 @@ export const routes = [
     Component: lazy(() => import('./pages/FeedPage')),
   },
   {
+    path: '/lists',
+    Component: lazy(() => import('./pages/ListsPage')),
+  },
+  {
+    path: '/lists/:listId',
+    Component: lazy(() => import('./pages/ListPage')),
+  },
+  {
     path: '*',
     Component: lazy(() => import('./pages/NotFoundPage')),
   }

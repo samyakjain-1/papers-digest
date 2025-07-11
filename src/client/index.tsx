@@ -1,5 +1,5 @@
 import { renderApp } from 'modelence/client';
-import { toast } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Suspense } from 'react';
@@ -38,6 +38,7 @@ renderApp({
   routesElement: (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <Toaster />
         <DocumentTitle title="PaperDigest" />
         <Suspense fallback={<div className="text-center p-8">Loading page...</div>}>
           <AppRoutes />

@@ -15,6 +15,7 @@ export default function HomePage() {
   const [search, setSearch] = useState('');
   const [activeSearch, setActiveSearch] = useState('');
   const [feedType, setFeedType] = useState<'recommended' | 'latest'>('latest');
+  const [conference, setConference] = useState('');
   const queryClient = useQueryClient();
   const { user } = useSession();
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export default function HomePage() {
       limit: 20,
       search: activeSearch || undefined,
       sortBy: 'publishedAt',
+      conference: conference || undefined,
     }),
     enabled: feedType === 'latest',
   }) as { data: { papers: any[], total: number }, isLoading: boolean, error: any };
@@ -44,6 +46,7 @@ export default function HomePage() {
       limit: 20,
       search: activeSearch || undefined,
       sortBy: 'publishedAt',
+      conference: conference || undefined,
     }),
     enabled: false,
   });
@@ -217,29 +220,58 @@ export default function HomePage() {
           )}
 
           {user && (
-            <button
-              onClick={() => navigate('/saved')}
-              className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors flex items-center gap-2"
-              title="My Saved Papers"
-            >
-              <Bookmark size={18} />
-              Saved
-            </button>
+            <>
+              <button
+                onClick={() => navigate('/saved')}
+                className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors flex items-center gap-2"
+                title="My Saved Papers"
+              >
+                <Bookmark size={18} />
+                Saved
+              </button>
+              <button
+                onClick={() => navigate('/lists')}
+                className="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors flex items-center gap-2"
+                title="My Lists"
+              >
+                <Bookmark size={18} />
+                My Lists
+              </button>
+            </>
           )}
         </div>
       </div>
 
       {/* Filters */}
-      <form onSubmit={handleSearchSubmit} className="flex gap-4 mb-6">
-        <input
-          type="text"
-          value={search}
-          onChange={handleSearchChange}
-          placeholder="Search by title or abstract..."
-          className="flex-1 px-3 py-2 border border-light-gray bg-dark-charcoal rounded-md focus:outline-none focus:ring-2 focus:ring-electric-blue"
-        />
-        <button type="submit" className="px-4 py-2 bg-light-gray rounded-md hover:bg-gray-600 transition-colors">Search</button>
-      </form>
+      <div className="flex gap-4 mb-6">
+        <form onSubmit={handleSearchSubmit} className="flex-1 flex gap-4">
+          <input
+            type="text"
+            value={search}
+            onChange={handleSearchChange}
+            placeholder="Search by title or abstract..."
+            className="flex-1 px-3 py-2 border border-light-gray bg-dark-charcoal rounded-md focus:outline-none focus:ring-2 focus:ring-electric-blue"
+          />
+          <button type="submit" className="px-4 py-2 bg-light-gray rounded-md hover:bg-gray-600 transition-colors">Search</button>
+        </form>
+        <select
+          value={conference}
+          onChange={(e) => setConference(e.target.value)}
+          className="px-3 py-2 border border-light-gray bg-dark-charcoal rounded-md focus:outline-none focus:ring-2 focus:ring-electric-blue"
+        >
+          <option value="">All Conferences</option>
+          <option value="CVPR">CVPR</option>
+          <option value="ICCV">ICCV</option>
+          <option value="ECCV">ECCV</option>
+          <option value="NeurIPS">NeurIPS</option>
+          <option value="ICML">ICML</option>
+          <option value="ICLR">ICLR</option>
+          <option value="ACL">ACL</option>
+          <option value="EMNLP">EMNLP</option>
+          <option value="NAACL">NAACL</option>
+          <option value="SIGGRAPH">SIGGRAPH</option>
+        </select>
+      </div>
 
       {/* Loading and Error States */}
       {(isLoading || (feedType === 'recommended' && isLoadingRecommended)) && <SkeletonLoader />}
@@ -274,6 +306,11 @@ export default function HomePage() {
                 <div className="flex items-center gap-4 mt-2 text-xs">
                   <span className="font-semibold">{paper.categories[0]}</span>
                   <span>{new Date(paper.publishedAt).toLocaleDateString()}</span>
+                  {paper.conference && (
+                    <span className="px-2 py-1 bg-purple-500 text-white rounded-md text-xs">
+                      {paper.conference}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="flex gap-2">
