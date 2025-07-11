@@ -8,7 +8,7 @@
     "start": "node .modelence/build/app.mjs",
     "dev": "modelence dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch-papers": "ts-node scripts/run-cron.ts"
+    "fetch-papers": "node --loader ts-node/esm scripts/run-cron.ts"
   },
   "dependencies": {
     "@modelence/ai": "latest",
