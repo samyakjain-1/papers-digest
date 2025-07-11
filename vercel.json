@@ -15,6 +15,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "nodeVersion": "18.x"
+  ]
 }
