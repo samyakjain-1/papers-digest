@@ -1,13 +1,13 @@
 import { Module } from 'modelence/server';
-import { dbPapers, dbSavedPapers } from './db';
-import { fetchAndInsertPapers } from './actions/fetch';
-import { listPapers } from './actions/list';
-import { simplifyAbstract } from './actions/simplify';
-import { findSimilarPapers } from './actions/similar';
-import { embedPaper, embedAllPapers } from './actions/embed';
-import { savePaper, unsavePaper } from './actions/save';
-import { getSavedPapers } from './actions/feed';
-import { getRecommendedPapers } from './actions/recommend';
+import { dbPapers, dbSavedPapers } from './db.js';
+import { fetchAndInsertPapers } from './actions/fetch.js';
+import { listPapers } from './actions/list.js';
+import { simplifyAbstract } from './actions/simplify.js';
+import { findSimilarPapers } from './actions/similar.js';
+import { embedPaper, embedAllPapers } from './actions/embed.js';
+import { savePaper, unsavePaper } from './actions/save.js';
+import { getSavedPapers } from './actions/feed.js';
+import { getRecommendedPapers } from './actions/recommend.js';
 import { ObjectId } from 'mongodb';
 
 /**
