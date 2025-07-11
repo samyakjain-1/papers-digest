@@ -48,6 +48,9 @@ export const dbPapers = new Store('papers', {
 
     // Index on publishedAt for sorting by date.
     { key: { publishedAt: -1 } },
+
+    // Add a text index for searching
+    { key: { title: 'text', abstract: 'text' } },
   ],
 });
 

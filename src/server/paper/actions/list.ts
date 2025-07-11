@@ -1,5 +1,4 @@
 import { dbPapers, dbSavedPapers } from '../db';
-import natural from 'natural';
 import { UserInfo } from 'modelence/server';
 import { ObjectId } from 'mongodb';
 
@@ -27,58 +26,36 @@ export async function listPapers(
 ) {
   const query: any = {};
 
-  // Add search filter for title or abstract if provided
+  // Use text search if a search query is provided
   if (search) {
-    const searchRegex = { $regex: search, $options: 'i' }; // Case-insensitive search
-    query.$or = [
-      { title: searchRegex },
-      { abstract: searchRegex },
-    ];
+    query.$text = { $search: search };
   }
 
   try {
-    // Fetch all matching papers
-    const allMatchingPapers = await dbPapers.fetch(query);
-    const total = allMatchingPapers.length;
-
-    let sortedPapers: any[] = allMatchingPapers;
-
+    const sort: any = {};
     if (sortBy === 'relevance' && search) {
-      const tfidf = new natural.TfIdf();
-      allMatchingPapers.forEach(paper => tfidf.addDocument(paper.abstract));
-
-      const paperScores = allMatchingPapers.map((paper, index) => {
-        let score = 0;
-        const terms = new natural.WordTokenizer().tokenize(search.toLowerCase());
-        if (terms) {
-          tfidf.tfidfs(terms, (i, measure) => {
-            if (i === index) {
-              score = measure;
-            }
-          });
-        }
-        return { ...paper, score };
-      });
-
-      sortedPapers = paperScores.sort((a, b) => b.score - a.score);
+      sort.score = { $meta: 'textScore' };
     } else {
-      // Default sort by publishedAt
-      sortedPapers.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+      sort.publishedAt = -1;
     }
 
-    const paginatedPapers = sortedPapers.slice(offset, offset + limit);
+    const total = await dbPapers.countDocuments(query);
+    const paginatedPapers = await dbPapers.fetch(query, {
+      sort,
+      skip: offset,
+      limit,
+    });
 
     const savedPapers = user ? await dbSavedPapers.fetch({ userId: new ObjectId(user.id) }) : [];
     const savedPaperIds = new Set(savedPapers.map((p: any) => p.paperId.toString()));
 
-    // Manually project the fields to return only the necessary data
-    const papers = paginatedPapers.map(paper => ({
+    const papers = paginatedPapers.map((paper: any) => ({
       title: paper.title,
       arxivId: paper.arxivId,
       publishedAt: paper.publishedAt,
       categories: paper.categories,
       authors: paper.authors,
-      _id: paper._id, // include id for react keys
+      _id: paper._id,
       isSaved: savedPaperIds.has(paper._id.toString()),
     }));
 
