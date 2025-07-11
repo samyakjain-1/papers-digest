@@ -1,10 +1,10 @@
 {
-  "functions": {
-    "api/index": {
-      "runtime": "@vercel/node",
-      "memory": 1024
+  "builds": [
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
