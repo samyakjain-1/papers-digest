@@ -1,7 +1,13 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".modelence/build/client",
   "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "npm run build",
+        "outputDirectory": ".modelence/build/client"
+      }
+    },
     {
       "src": "api/index.ts",
       "use": "@vercel/node"
