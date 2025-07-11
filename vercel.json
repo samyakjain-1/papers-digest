@@ -1,18 +1,14 @@
 {
-  "builds": [
-    {
-      "src": ".modelence/build/app.mjs",
-      "use": "@vercel/node"
+  "functions": {
+    "api/index": {
+      "runtime": "@vercel/node",
+      "memory": 1024
     }
-  ],
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": ".modelence/build/app.mjs"
-    },
-    {
-      "source": "/(.*)",
-      "destination": ".modelence/build/client/index.html"
+      "destination": "/api/index"
     }
   ]
 }
