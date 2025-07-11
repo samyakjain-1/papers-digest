@@ -12,13 +12,26 @@ This project is a web application for browsing, saving, and understanding resear
 - **Vector-Based Similarity Search**: Find semantically similar papers using vector embeddings and MongoDB Atlas Vector Search.
 - **Personalized Feed**: For logged-in users, the home page displays a personalized feed of papers similar to their saved papers.
 
-## Tech Stack
+## Architecture
 
-- **Framework**: [Modelence](https://modelence.com)
-- **Frontend**: React, React Router, TanStack Query, Tailwind CSS
-- **Backend**: Node.js, Express
-- **Database**: MongoDB with Atlas Vector Search
-- **AI**: OpenAI API for embeddings and text generation
+The application is built with the **Modelence** framework, which provides a modular architecture for both the frontend and backend.
+
+-   **Backend**: The backend is a Node.js application that uses a modular structure. The core logic is encapsulated in the `paper` module, which handles all paper-related functionality, including data fetching, database operations, and AI-powered features.
+-   **Frontend**: The frontend is a React application that uses React Router for navigation and TanStack Query for data fetching and state management. The UI is built with Tailwind CSS.
+-   **Database**: The application uses MongoDB as its database, with MongoDB Atlas Vector Search for the similarity search feature.
+
+## Technical Implementation
+
+### Data Fetching
+
+-   The application fetches the latest papers from the arXiv API in the AI, Machine Learning, and Computation and Language categories.
+-   The `fetchAndInsertPapers` function in `src/server/paper/actions/fetch.ts` handles the data fetching process. It parses the XML response from the arXiv API and uses an upsert operation to add new papers to the database and update existing ones.
+
+### AI-Powered Features
+
+-   **Abstract Simplification**: The `simplifyAbstract` function in `src/server/paper/actions/simplify.ts` uses the OpenAI API with the `gpt-4o` model to generate a simplified summary of a paper's abstract. The prompt is carefully engineered to produce a clear and easy-to-understand summary for a non-technical audience.
+-   **Vector Embeddings**: The `embedPaper` and `embedAllPapers` functions in `src/server/paper/actions/embed.ts` use the OpenAI API with the `text-embedding-ada-002` model to generate vector embeddings for the paper abstracts. These embeddings are stored in the `embedding` field in the database.
+-   **Similarity Search**: The `findSimilarPapers` function in `src/server/paper/actions/similar.ts` uses a MongoDB Atlas Vector Search index to find papers with similar abstracts. It performs a k-NN search on the `embedding` field and returns a list of the most similar papers.
 
 ## Setup and Installation
 
