@@ -4,6 +4,6 @@ dotenv.config({ path: '.modelence.env' });
 import { startApp } from 'modelence/server';
 import paperModule from './paper';
 
-export default startApp({
+startApp({
   modules: [paperModule]
 });
