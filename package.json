@@ -8,7 +8,7 @@
     "start": "node .modelence/build/app.mjs",
     "dev": "modelence dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch-papers": "node -e 'import(\"./src/server/paper/actions/fetch.mjs\").then(module => module.fetchAndInsertPapers()).then(() => import(\"./src/server/paper/actions/embed.mjs\").then(module => module.embedAllPapers()))'"
+    "fetch-papers": "npm run build && node -e 'import(\"./.modelence/build/server/paper/actions/fetch.js\").then(module => module.fetchAndInsertPapers()).then(() => import(\"./.modelence/build/server/paper/actions/embed.js\").then(module => module.embedAllPapers()))'"
   },
   "dependencies": {
     "@modelence/ai": "latest",
