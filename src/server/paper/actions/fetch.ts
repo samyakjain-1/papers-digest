@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
-import { dbPapers } from '../db';
+import { dbPapers } from '../db.js';
 
 const ARXIV_API_URL = 'https://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL&start=0&max_results=2000&sortBy=submittedDate&sortOrder=descending';
 
