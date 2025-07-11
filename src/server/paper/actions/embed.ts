@@ -1,4 +1,4 @@
-import { dbPapers } from '../db.js';
+import { dbPapers } from '../db.ts';
 import OpenAI from 'openai';
 
 interface EmbedPaperParams {

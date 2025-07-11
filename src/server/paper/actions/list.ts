@@ -1,4 +1,4 @@
-import { dbPapers, dbSavedPapers } from '../db';
+import { dbPapers, dbSavedPapers } from '../db.js';
 import { UserInfo } from 'modelence/server';
 import { ObjectId } from 'mongodb';
 

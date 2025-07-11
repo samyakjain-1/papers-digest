@@ -1,4 +1,4 @@
-import { dbSavedPapers, dbPapers } from '../db';
+import { dbSavedPapers, dbPapers } from '../db.js';
 import { UserInfo, ObjectId } from 'modelence/server';
 
 export async function getSavedPapers(user: UserInfo) {

@@ -1,5 +1,5 @@
 import { Module } from 'modelence/server';
-import { dbPapers, dbSavedPapers } from './db.js';
+import { dbPapers, dbSavedPapers } from './db.ts';
 import { fetchAndInsertPapers } from './actions/fetch.js';
 import { listPapers } from './actions/list.js';
 import { simplifyAbstract } from './actions/simplify.js';
