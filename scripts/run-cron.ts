@@ -8,17 +8,21 @@ import { fetchAndInsertPapers } from '../src/server/paper/actions/fetch.js';
 import { embedAllPapers } from '../src/server/paper/actions/embed.js';
 
 async function main() {
-  console.log('Initializing Modelence application...');
-  // We start the app without a server to just initialize the backend
-  await startApp({
-    modules: [paperModule]
-  });
-  console.log('Modelence initialized.');
-
-  console.log('Starting scheduled job: fetch and embed papers...');
   try {
+    console.log('Initializing Modelence application...');
+    // We start the app without a server to just initialize the backend
+    await startApp({
+      modules: [paperModule]
+    });
+    console.log('Modelence initialized.');
+
+    console.log('Starting scheduled job: fetch and embed papers...');
+    console.log('Fetching and inserting papers...');
     await fetchAndInsertPapers();
+    console.log('Finished fetching and inserting papers.');
+    console.log('Embedding all papers...');
     await embedAllPapers();
+    console.log('Finished embedding all papers.');
     console.log('Successfully finished scheduled job.');
     process.exit(0);
   } catch (error) {
