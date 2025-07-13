@@ -1,6 +1,13 @@
 // scripts/run-cron.ts
+console.log('Script starting...');
 import dotenv from 'dotenv';
-dotenv.config({ path: '.modelence.env' });
+try {
+  dotenv.config({ path: '.modelence.env' });
+  console.log('Dotenv configured.');
+} catch (e) {
+  console.error('Error loading .env file:', e);
+  process.exit(1);
+}
 
 import { startApp } from 'modelence/server';
 import paperModule from '../src/server/paper/index.js';
